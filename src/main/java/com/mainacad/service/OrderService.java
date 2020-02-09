@@ -33,6 +33,21 @@ public class OrderService {
         return orderDAO.updateAmount(orderId, amount);
     }
 
+    public Order getByCartWithItem(Integer cartId, Integer itemId) {
+        List<Order> orders = getAllByCart(cartId);
+
+        if (orders.isEmpty()) {
+            return null;
+        } else {
+            for (Order each : orders) {
+                if (each.getItem().getId().equals(itemId)) {
+                    return each;
+                }
+            }
+        }
+        return null;
+    }
+
     // CRUD
     public Order save(Order order) {
         if (order.getId() == null) {
