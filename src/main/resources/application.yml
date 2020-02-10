@@ -4,9 +4,9 @@ spring:
       suffix: .jsp
       prefix: /WEB-INF/jsp/
   datasource:
-    url: jdbc:postgresql://localhost:5433/spring
+    url: jdbc:postgresql://localhost:5432/spring
     username: "postgres"
-    password: "postgresql"
+    password: "estafeta"
     hikari:
       connectionTimeout: 20000
       maximumPoolSize: 5

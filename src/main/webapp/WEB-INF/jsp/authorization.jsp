@@ -8,7 +8,7 @@
 <body>
 <h2>${message}</h2>
 <br>
-<a href="/user/registration">REGISTER NEW USER</a>
+<a href="/registration">REGISTER NEW USER</a>
 <br>
 <form action="/user/auth" method="post">
     <input type="text" size="30" name="login" required/>

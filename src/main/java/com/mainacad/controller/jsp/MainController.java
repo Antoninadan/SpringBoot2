@@ -13,7 +13,7 @@ public class MainController {
 
     @GetMapping()
     public String getLandingPage(Model model) {
-        model.addAttribute("message", "Hello! Еhis is landing page!");
+        model.addAttribute("message", "Hello! This is landing page!");
         return "authorization";
     }
 }

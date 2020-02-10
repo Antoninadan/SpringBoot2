@@ -67,4 +67,40 @@ public class CartJspController {
     }
 
 
-}
+//
+//
+//
+//    if (action.equals("do-cart-to-be-closed")) {
+//        Integer cartIdSelected = Integer.valueOf(req.getParameter("cartId"));
+//        Cart cart = CartService.getById(cartIdSelected);
+//        Cart cartStatus1 = CartService.updateStatus(cart, Status.TO_BE_CLOSED);
+//        if (cartStatus1 != null) {
+//            req.setAttribute("user", user);
+//            req.setAttribute("cart", cart);
+//
+//            List<OrderDTO> orderDTOS = OrderService.getAllDTOByCard(cart);
+//            req.setAttribute("orderDTOCollection", orderDTOS);
+//
+//            dispatcher = req.getRequestDispatcher("/jsp/cart-current.jsp");
+//        } else {
+//            req.setAttribute("user", user);
+//            dispatcher = req.getRequestDispatcher("/jsp/wrong-object-for-user.jsp");
+//
+//            req.setAttribute("errorMsg", "Cart doesnot exist!");
+//        }
+//        dispatcher.forward(req, resp);
+//    } else if (action.equals("do-cart-closed")) {
+//        Integer cartIdSelected = Integer.valueOf(req.getParameter("cartId"));
+//        Cart cart = CartService.getById(cartIdSelected);
+//        Cart cartStatus1 = CartService.updateStatus(cart, Status.CLOSED);
+//        if (cartStatus1 != null) {
+//            req.setAttribute("user", user);
+//            req.setAttribute("cart", cart);
+//
+//            List<OrderDTO> orderDTOS = OrderService.getAllDTOByCard(cart);
+//            req.setAttribute("orderDTOCollection", orderDTOS);
+//
+//            dispatcher = req.getRequestDispatcher("/jsp/cart-current.jsp");
+//        }
+
+    }
