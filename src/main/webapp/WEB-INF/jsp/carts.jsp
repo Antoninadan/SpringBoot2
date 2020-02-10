@@ -6,26 +6,16 @@
 <title>Carts</title>
 </head>
 <body>
-	<h3>Carts:</h3>
-
-	<!-- Back to items -->
-	<form action="item" method="post">
-		<input type="text" name="action" value="to-items" hidden> <input
-			hidden="true" name="userId" value="${user.id}"> <input
-			type="submit" value="Back to items">
-	</form>
-	<br>
-	<br>
+	<h2>Carts:</h2>
 
 	<!-- Table of carts  -->
 	<table>
-		<!-- here should go some titles... -->
 		<tr>
-			<th>ID</th>
-			<th>STATUS</th>
+			<th>id</th>
+			<th>status</th>
 		</tr>
 		<c:forEach items="${cartCollection}" var="cart">
-			<form action="/cart/open" method="get">
+			<form action="/order/items-by-cart" method="get">
 			<tr>
 				<td><c:out value="${cart.id}" /></td>
 				<td><c:out value="${cart.status}" /></td>
@@ -38,6 +28,15 @@
 			</form>
 		</c:forEach>
 	</table>
+	<br>
+	<br>
+	<br>
+
+	<!-- Back to cabinet -->
+	<form action="/user/cabinet" method="get">
+		<input hidden="true" name="userId" value="${user.id}">
+		<input type="submit" value="Back to cabinet">
+	</form>
 
 </body>
 </html>

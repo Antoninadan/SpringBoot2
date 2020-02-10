@@ -7,18 +7,10 @@
 </head>
 <body>
 
-	<!-- 	Back to items -->
-	<br>
-	<form action="item" method="post">
-		<input type="text" name="action" value="to-items" hidden> <input
-			hidden="true" name="userId" value="${user.id}"> <input
-			type="submit" value="Back to items">
-	</form>
-
-	<h3>
+	<h2>
 		Cart, id =
 		<c:out value="${cart.id} ${cart.status}" />
-	</h3>
+	</h2>
 
 	<!-- Button "To be closed" -->
 	<c:if test="${cart.status == 'OPEN'}">
@@ -39,15 +31,16 @@
 				type="submit" value="Close">
 		</form>
 	</c:if>
-
+	<br>
+	<br>
 	<!-- Table of items in cart -->
 	<table>
-		Items in cart:
+		<h3> ITEMS IN CART: </h3>
 		<tr>
-			<th>ID</th>
-			<th>NAME</th>
-			<th>PRICE</th>
-			<th>AMOUNT</th>
+			<th>id</th>
+			<th>name</th>
+			<th>price</th>
+			<th>amount</th>
 		</tr>
 		<c:forEach items="${orderDTOCollection}" var="orderDTO">
 			<tr>
@@ -58,12 +51,23 @@
 			</tr>
 		</c:forEach>
 	</table>
+	<br>
+	<br>
 
 	<!-- All carts -->
-	<form action="cart" method="post">
+	<form action="/cart/all-by-user" method="get">
 		<input type="text" name="action" value="all-carts" hidden> <input
 			hidden="true" name="userId" value="${user.id}"> <input
 			type="submit" value="All carts">
+	</form>
+	<br>
+	<br>
+	<br>
+
+	<!-- Back to cabinet -->
+	<form action="/user/cabinet" method="get">
+		<input hidden="true" name="userId" value="${user.id}">
+		<input type="submit" value="Back to cabinet">
 	</form>
 </body>
 </html>
