@@ -38,6 +38,10 @@ public class CartService {
         return cartDAO.getAllByUserAndPeriod(userId, timeFrom, timeTo);
     }
 
+    public List<Cart> getAllByUser(Integer userId) {
+        return cartDAO.getAllByUser(userId);
+    }
+
     public List<Cart> getByUserAndOpenStatus(Integer userId) {
         return cartDAO.getByUserAndOpenStatus(userId);
     }

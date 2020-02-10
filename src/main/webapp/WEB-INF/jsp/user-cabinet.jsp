@@ -9,7 +9,7 @@
 <h2>Hello, ${user.firstName} ${user.lastName}!!!</h2>
 
 <!-- All carts -->
-<form action="cart" method="post">
+<form action="/cart/all-by-user" method="get">
     <input type="text" name="action" value="all-carts" hidden> <input
         hidden="true" name="userId" value="${user.id}"> <input
         type="submit" value="All carts">
@@ -31,8 +31,6 @@
                 <td><c:out value="${item.id}" /></td>
                 <td><c:out value="${item.name}" /></td>
                 <td><c:out value="${item.price}" /></td>
-                <%--<td><input type="text" name="action"--%>
-                           <%--value="add-item-in-cart" hidden></td>--%>
                 <td><input hidden="true" name="userId" value="${user.id}">
                 </td>
                 <td><input hidden="true" name="itemId" value="${item.id}">

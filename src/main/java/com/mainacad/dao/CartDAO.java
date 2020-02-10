@@ -16,6 +16,9 @@ public interface CartDAO extends JpaRepository<Cart, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM carts WHERE user_id = :userId AND creation_time >= :timeFrom AND creation_time <= :timeTo")
     List<Cart> getAllByUserAndPeriod(@Param("userId") Integer userId, @Param("timeFrom") Long timeFrom, @Param("timeTo") Long timeTo);
 
+    @Query(nativeQuery = true, value = "SELECT * FROM carts WHERE user_id = :userId")
+    List<Cart> getAllByUser(@Param("userId") Integer userId);
+
     @Query(nativeQuery = true, value = "SELECT * FROM carts WHERE user_id = :userId AND status=0")
     List<Cart> getByUserAndOpenStatus(@Param("userId") Integer userId);
 
