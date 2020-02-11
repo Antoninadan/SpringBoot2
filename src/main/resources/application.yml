@@ -1,12 +1,14 @@
 spring:
+  cache:
+    type: none
   mvc:
     view:
       suffix: .jsp
       prefix: /WEB-INF/jsp/
   datasource:
-    url: jdbc:postgresql://localhost:5432/spring
+    url: jdbc:postgresql://localhost:5433/spring
     username: "postgres"
-    password: "estafeta"
+    password: "postgresql"
     hikari:
       connectionTimeout: 20000
       maximumPoolSize: 5

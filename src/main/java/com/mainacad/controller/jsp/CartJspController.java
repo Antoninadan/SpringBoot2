@@ -1,12 +1,17 @@
 package com.mainacad.controller.jsp;
 
+import com.mainacad.dao.dto.OrderDTO;
 import com.mainacad.model.Cart;
 import com.mainacad.model.Item;
+import com.mainacad.model.Status;
 import com.mainacad.model.User;
 import com.mainacad.service.CartService;
 import com.mainacad.service.ItemService;
+import com.mainacad.service.OrderService;
 import com.mainacad.service.UserService;
+import com.mainacad.util.MapperOrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +31,15 @@ public class CartJspController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ItemService itemService;
+
+    @Autowired
+    OrderService orderService;
+
+    @Autowired
+    MapperOrderUtil mapperOrderUtil;
 
     @GetMapping("all-by-user")
     public String getAllByUser(Model model,
@@ -66,41 +80,60 @@ public class CartJspController {
         }
     }
 
+    @PostMapping("do-cart-to-be-closed")
+    public String cartDoToBeClosed(Model model,
+                                   @RequestParam(value = "userId") String userId,
+                                   @RequestParam(value = "cartId") String cartId) {
+        Integer userIdSelected = Integer.valueOf(userId);
+        User user = userService.getById(userIdSelected);
+        if (user == null) {
+            // TODO
+            return null;
+        }
 
-//
-//
-//
-//    if (action.equals("do-cart-to-be-closed")) {
-//        Integer cartIdSelected = Integer.valueOf(req.getParameter("cartId"));
-//        Cart cart = CartService.getById(cartIdSelected);
-//        Cart cartStatus1 = CartService.updateStatus(cart, Status.TO_BE_CLOSED);
-//        if (cartStatus1 != null) {
-//            req.setAttribute("user", user);
-//            req.setAttribute("cart", cart);
-//
-//            List<OrderDTO> orderDTOS = OrderService.getAllDTOByCard(cart);
-//            req.setAttribute("orderDTOCollection", orderDTOS);
-//
-//            dispatcher = req.getRequestDispatcher("/jsp/cart-current.jsp");
-//        } else {
-//            req.setAttribute("user", user);
-//            dispatcher = req.getRequestDispatcher("/jsp/wrong-object-for-user.jsp");
-//
-//            req.setAttribute("errorMsg", "Cart doesnot exist!");
-//        }
-//        dispatcher.forward(req, resp);
-//    } else if (action.equals("do-cart-closed")) {
-//        Integer cartIdSelected = Integer.valueOf(req.getParameter("cartId"));
-//        Cart cart = CartService.getById(cartIdSelected);
-//        Cart cartStatus1 = CartService.updateStatus(cart, Status.CLOSED);
-//        if (cartStatus1 != null) {
-//            req.setAttribute("user", user);
-//            req.setAttribute("cart", cart);
-//
-//            List<OrderDTO> orderDTOS = OrderService.getAllDTOByCard(cart);
-//            req.setAttribute("orderDTOCollection", orderDTOS);
-//
-//            dispatcher = req.getRequestDispatcher("/jsp/cart-current.jsp");
-//        }
+        Integer cartIdSelected = Integer.valueOf(cartId);
+        Cart cart = cartService.getById(cartIdSelected);
+        if (cart != null) {
+            cartService.updateStatus(cartIdSelected, Status.TO_BE_CLOSED);
 
+            List<OrderDTO> orderDTOS = mapperOrderUtil.toOrderDTOListFromOrderList(orderService.getAllByCart(cartIdSelected));
+            model.addAttribute("orderDTOCollection", orderDTOS);
+
+            model.addAttribute("cart", cart);
+            model.addAttribute("user", user);
+            return "cart";
+        } else {
+            // TODO
+            return null;
+        }
     }
+
+
+    @PostMapping("do-cart-closed")
+    public String cartDoClosed(Model model,
+                               @RequestParam(value = "userId") String userId,
+                               @RequestParam(value = "cartId") String cartId) {
+        Integer userIdSelected = Integer.valueOf(userId);
+        User user = userService.getById(userIdSelected);
+        if (user == null) {
+            // TODO
+            return null;
+        }
+
+        Integer cartIdSelected = Integer.valueOf(cartId);
+        Cart cart = cartService.getById(cartIdSelected);
+        if (cart != null) {
+            cartService.updateStatus(cartIdSelected, Status.CLOSED);
+
+            List<OrderDTO> orderDTOS = mapperOrderUtil.toOrderDTOListFromOrderList(orderService.getAllByCart(cartIdSelected));
+            model.addAttribute("orderDTOCollection", orderDTOS);
+
+            model.addAttribute("cart", cart);
+            model.addAttribute("user", user);
+            return "redirect: cart";
+        } else {
+            // TODO
+            return null;
+        }
+    }
+}

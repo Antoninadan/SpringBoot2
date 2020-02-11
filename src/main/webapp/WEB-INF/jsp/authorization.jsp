@@ -6,7 +6,7 @@
     <title>Main Page</title>
 </head>
 <body>
-<h2>${message}</h2>
+<h2><c:out value="${message}" default="Please, input your login-password!"/></h2>
 <br>
 <a href="/registration">REGISTER NEW USER</a>
 <br>

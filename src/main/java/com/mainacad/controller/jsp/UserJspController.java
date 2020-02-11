@@ -34,8 +34,6 @@ public class UserJspController {
                        @RequestParam(value = "pass") String password,
                        @RequestParam(value = "firstName") String firstName,
                        @RequestParam(value = "lastName") String lastName) {
-
-
         User user = userService.save(new User(login, password, firstName, lastName));
         if (user != null) {
             model.addAttribute("user", user);
@@ -51,35 +49,31 @@ public class UserJspController {
     public String getAuthUser(Model model,
                               @RequestParam(value = "login") String login,
                               @RequestParam(value = "pass") String password) {
-
         User user = userService.getByLoginAndPassword(login, password);
-        if (user != null) {
-            model.addAttribute("user", user);
-
-            List<Item> items = itemService.getAllAvailable();
-            model.addAttribute("itemCollection", items);
-            return "user-cabinet";
-        } else {
+        if (user == null) {
             model.addAttribute("message", "Login or password are wrong!");
-            return "wrong-login";
+            return "authorization";
         }
+
+        model.addAttribute("user", user);
+        List<Item> items = itemService.getAllAvailable();
+        model.addAttribute("itemCollection", items);
+        return "user-cabinet";
     }
 
     @GetMapping("cabinet")
     public String getAuthUser(Model model,
                               @RequestParam(value = "userId") String userId) {
-
         Integer userIdSelected = Integer.valueOf(userId);
         User user = userService.getById(userIdSelected);
-        if (user != null) {
-            model.addAttribute("user", user);
-
-            List<Item> items = itemService.getAllAvailable();
-            model.addAttribute("itemCollection", items);
-            return "user-cabinet";
-        } else {
-            // TODO
-            return null;
+        if (user == null) {
+            model.addAttribute("message", "User is wrong! Relogin, pls");
+            return "authorization";
         }
+
+        model.addAttribute("user", user);
+        List<Item> items = itemService.getAllAvailable();
+        model.addAttribute("itemCollection", items);
+        return "user-cabinet";
     }
 }

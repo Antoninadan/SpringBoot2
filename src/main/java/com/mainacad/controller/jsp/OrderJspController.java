@@ -38,27 +38,28 @@ public class OrderJspController {
 
     @GetMapping("items-by-cart")
     public String getAllDTOByCard(Model model,
-                                          @RequestParam(value = "userId") String userId,
-                                          @RequestParam(value = "cartId") String cartId) {
+                                  @RequestParam(value = "userId") String userId,
+                                  @RequestParam(value = "cartId") String cartId) {
         Integer userIdSelected = Integer.valueOf(userId);
         User user = userService.getById(userIdSelected);
         if (user == null) {
-            // TODO
-            return null;
+            model.addAttribute("message", "User is wrong! Relogin, pls");
+            return "authorization";
         }
 
         Integer cartIdSelected = Integer.valueOf(cartId);
         Cart cart = cartService.getById(cartIdSelected);
-        if (cart != null) {
-            model.addAttribute("cart", cart);
+        if (cart == null) {
             model.addAttribute("user", user);
-            List<OrderDTO> orderDTOS = mapperOrderUtil.toOrderDTOListFromOrderList(orderService.getAllByCart(cartIdSelected));
-            model.addAttribute("orderDTOCollection", orderDTOS);
-
-            return "cart";
-        } else {
-            // TODO
-            return null;
+            model.addAttribute("message", "Cart is wrong!");
+            return "user-cabinet";
         }
+
+        model.addAttribute("cart", cart);
+        model.addAttribute("user", user);
+        List<OrderDTO> orderDTOS = mapperOrderUtil.toOrderDTOListFromOrderList(orderService.getAllByCart(cartIdSelected));
+        model.addAttribute("orderDTOCollection", orderDTOS);
+
+        return "cart";
     }
 }
