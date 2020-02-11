@@ -2,8 +2,10 @@ package com.mainacad.controller.jsp;
 
 import com.mainacad.dao.dto.OrderDTO;
 import com.mainacad.model.Cart;
+import com.mainacad.model.Item;
 import com.mainacad.model.User;
 import com.mainacad.service.CartService;
+import com.mainacad.service.ItemService;
 import com.mainacad.service.OrderService;
 import com.mainacad.service.UserService;
 import com.mainacad.util.MapperOrderUtil;
@@ -34,6 +36,9 @@ public class OrderJspController {
     UserService userService;
 
     @Autowired
+    ItemService itemService;
+
+    @Autowired
     MapperOrderUtil mapperOrderUtil;
 
     @GetMapping("items-by-cart")
@@ -51,6 +56,8 @@ public class OrderJspController {
         Cart cart = cartService.getById(cartIdSelected);
         if (cart == null) {
             model.addAttribute("user", user);
+            List<Item> items = itemService.getAllAvailable();
+            model.addAttribute("itemCollection", items);
             model.addAttribute("message", "Cart is wrong!");
             return "user-cabinet";
         }
@@ -59,7 +66,6 @@ public class OrderJspController {
         model.addAttribute("user", user);
         List<OrderDTO> orderDTOS = mapperOrderUtil.toOrderDTOListFromOrderList(orderService.getAllByCart(cartIdSelected));
         model.addAttribute("orderDTOCollection", orderDTOS);
-
         return "cart";
     }
 }

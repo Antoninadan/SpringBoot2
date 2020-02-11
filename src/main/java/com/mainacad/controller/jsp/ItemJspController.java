@@ -29,43 +29,32 @@ public class ItemJspController {
 
     @PostMapping("add-item-in-cart")
     public String addItemInCart(Model model,
-                              @RequestParam(value="itemId") String itemId,
-                              @RequestParam(value="userId") String userId) {
+                                @RequestParam(value = "itemId") String itemId,
+                                @RequestParam(value = "userId") String userId) {
         Integer userIdSelected = Integer.valueOf(userId);
         User user = userService.getById(userIdSelected);
-        if (user == null){
-            // TODO
-            return null;
+        if (user == null) {
+            model.addAttribute("message", "User is wrong! Relogin, pls");
+            return "authorization";
         }
 
         Integer itemIdSelected = Integer.valueOf(itemId);
         Item item = itemService.getById(itemIdSelected);
-        if (item != null) {
-            Cart cart = cartService.addItem(userIdSelected, itemIdSelected);
-            model.addAttribute("cart", cart);
-
+        if (item == null) {
+            model.addAttribute("user", user);
             List<Item> items = itemService.getAllAvailable();
             model.addAttribute("itemCollection", items);
-
-            model.addAttribute("user", user);
-            model.addAttribute("userId", user.getId());
-            model.addAttribute("firstName", user.getFirstName());
-            model.addAttribute("lastName", user.getLastName());
-
-            // TODO
+            model.addAttribute("message", "Item is wrong!");
             return "user-cabinet";
-        } else {
-            model.addAttribute("user", user);
-            model.addAttribute("userId", user.getId());
-            model.addAttribute("firstName", user.getFirstName());
-            model.addAttribute("lastName", user.getLastName());
-
-            // TODO
-            return "user-cabinet";
-//            dispatcher = req.getRequestDispatcher("/jsp/wrong-object-for-user.jsp");
-//            req.setAttribute("errorMsg", "Item doesnot exist!");
         }
 
-    }
+        Cart cart = cartService.addItem(userIdSelected, itemIdSelected);
 
+        model.addAttribute("cart", cart);
+        model.addAttribute("user", user);
+        List<Item> items = itemService.getAllAvailable();
+        model.addAttribute("itemCollection", items);
+        return "user-cabinet";
+    }
 }
+

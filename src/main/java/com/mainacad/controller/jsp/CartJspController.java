@@ -46,15 +46,15 @@ public class CartJspController {
                                @RequestParam(value = "userId") String userId) {
         Integer userIdSelected = Integer.valueOf(userId);
         User user = userService.getById(userIdSelected);
-        if (user != null) {
-            List<Cart> carts = cartService.getAllByUser(userIdSelected);
-            model.addAttribute("cartCollection", carts);
-            model.addAttribute("user", user);
-            return "carts";
-        } else {
-            // TODO
-            return null;
+        if (user == null) {
+            model.addAttribute("message", "User is wrong! Relogin, pls");
+            return "authorization";
         }
+
+        List<Cart> carts = cartService.getAllByUser(userIdSelected);
+        model.addAttribute("cartCollection", carts);
+        model.addAttribute("user", user);
+        return "carts";
     }
 
     @GetMapping("open")
@@ -64,20 +64,23 @@ public class CartJspController {
         Integer userIdSelected = Integer.valueOf(userId);
         User user = userService.getById(userIdSelected);
         if (user == null) {
-            // TODO
-            return null;
+            model.addAttribute("message", "User is wrong! Relogin, pls");
+            return "authorization";
         }
 
         Integer cartIdSelected = Integer.valueOf(cartId);
         Cart cart = cartService.getById(cartIdSelected);
-        if (cart != null) {
-            model.addAttribute("cart", cart);
+        if (cart == null) {
             model.addAttribute("user", user);
-            return "cart";
-        } else {
-            // TODO
-            return null;
+            List<Item> items = itemService.getAllAvailable();
+            model.addAttribute("itemCollection", items);
+            model.addAttribute("message", "Cart is wrong!");
+            return "user-cabinet";
         }
+
+        model.addAttribute("cart", cart);
+        model.addAttribute("user", user);
+        return "cart";
     }
 
     @PostMapping("do-cart-to-be-closed")
@@ -87,25 +90,27 @@ public class CartJspController {
         Integer userIdSelected = Integer.valueOf(userId);
         User user = userService.getById(userIdSelected);
         if (user == null) {
-            // TODO
-            return null;
+            model.addAttribute("message", "User is wrong! Relogin, pls");
+            return "authorization";
         }
 
         Integer cartIdSelected = Integer.valueOf(cartId);
         Cart cart = cartService.getById(cartIdSelected);
-        if (cart != null) {
-            cartService.updateStatus(cartIdSelected, Status.TO_BE_CLOSED);
-
-            List<OrderDTO> orderDTOS = mapperOrderUtil.toOrderDTOListFromOrderList(orderService.getAllByCart(cartIdSelected));
-            model.addAttribute("orderDTOCollection", orderDTOS);
-
-            model.addAttribute("cart", cart);
+        if (cart == null) {
             model.addAttribute("user", user);
-            return "cart";
-        } else {
-            // TODO
-            return null;
+            List<Item> items = itemService.getAllAvailable();
+            model.addAttribute("itemCollection", items);
+            model.addAttribute("message", "Cart is wrong!");
+            return "user-cabinet";
         }
+
+        cartService.updateStatus(cartIdSelected, Status.TO_BE_CLOSED);
+
+        List<OrderDTO> orderDTOS = mapperOrderUtil.toOrderDTOListFromOrderList(orderService.getAllByCart(cartIdSelected));
+        model.addAttribute("orderDTOCollection", orderDTOS);
+        model.addAttribute("cart", cart);
+        model.addAttribute("user", user);
+        return "cart";
     }
 
 
@@ -116,24 +121,26 @@ public class CartJspController {
         Integer userIdSelected = Integer.valueOf(userId);
         User user = userService.getById(userIdSelected);
         if (user == null) {
-            // TODO
-            return null;
+            model.addAttribute("message", "User is wrong! Relogin, pls");
+            return "authorization";
         }
 
         Integer cartIdSelected = Integer.valueOf(cartId);
         Cart cart = cartService.getById(cartIdSelected);
-        if (cart != null) {
-            cartService.updateStatus(cartIdSelected, Status.CLOSED);
-
-            List<OrderDTO> orderDTOS = mapperOrderUtil.toOrderDTOListFromOrderList(orderService.getAllByCart(cartIdSelected));
-            model.addAttribute("orderDTOCollection", orderDTOS);
-
-            model.addAttribute("cart", cart);
+        if (cart == null) {
             model.addAttribute("user", user);
-            return "redirect: cart";
-        } else {
-            // TODO
-            return null;
+            List<Item> items = itemService.getAllAvailable();
+            model.addAttribute("itemCollection", items);
+            model.addAttribute("message", "Cart is wrong!");
+            return "user-cabinet";
         }
+
+        cartService.updateStatus(cartIdSelected, Status.CLOSED);
+
+        List<OrderDTO> orderDTOS = mapperOrderUtil.toOrderDTOListFromOrderList(orderService.getAllByCart(cartIdSelected));
+        model.addAttribute("orderDTOCollection", orderDTOS);
+        model.addAttribute("cart", cart);
+        model.addAttribute("user", user);
+        return "cart";
     }
 }

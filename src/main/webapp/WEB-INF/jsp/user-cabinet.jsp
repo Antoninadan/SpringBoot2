@@ -6,6 +6,11 @@
     <title>Logined Page</title>
 </head>
 <body>
+
+<c:if test="${message != null}">
+    <h3> ${message} </h3>
+</c:if>
+
 <h2>Hello, ${user.firstName} ${user.lastName}!!!</h2>
 <br>
 <br>
