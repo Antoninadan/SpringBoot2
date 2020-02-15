@@ -14,7 +14,7 @@ public class AppRunner {
 //		SpringApplication.run(AppRunner.class, args);
 
 		SpringApplication context = new SpringApplication(AppRunner.class);
-		context.setAdditionalProfiles("jsp");
+		context.setAdditionalProfiles("rest");
 		context.run(args);
 	}
 
