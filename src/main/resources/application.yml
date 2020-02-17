@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: rest
   mvc:
     view:
       suffix: .jsp
@@ -22,10 +24,10 @@ spring:
       ddl-auto: update
 #  flyway.baseline-on-migrate: true
 
-db-config:
-  pqsl:
-    property: value
-  h2:
-    property: value
+no-sql:
   mongo:
-    property: value
+    name: local
+    host: localhost
+    port: 27017
+
+

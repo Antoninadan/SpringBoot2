@@ -44,6 +44,11 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.10.2</version>
+        </dependency>
 
         <!--SPRING-ACTUATOR-->
         <dependency>
@@ -59,8 +64,8 @@
 
         <!--FLYWAY-->
         <!--<dependency>-->
-            <!--<groupId>org.flywaydb</groupId>-->
-            <!--<artifactId>flyway-core</artifactId>-->
+        <!--<groupId>org.flywaydb</groupId>-->
+        <!--<artifactId>flyway-core</artifactId>-->
         <!--</dependency>-->
 
         <!--SPRING-WEB-->
@@ -143,7 +148,7 @@
             <version>${swagger.version}</version>
         </dependency>
 
-<!--        STRING UTILS-->
+        <!--        STRING UTILS-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -158,5 +163,30 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.jolira</groupId>
+                <artifactId>onejar-maven-plugin</artifactId>
+                <version>1.4.4</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <mainClass>com.mainacad.AppRunner</mainClass>
+                            <attachToBuild>true</attachToBuild>
+                            <filename>
+                                MyApp.jar
+                            </filename>
+                        </configuration>
+                        <goals>
+                            <goal>one-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 
 </project>

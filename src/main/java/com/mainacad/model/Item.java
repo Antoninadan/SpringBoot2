@@ -25,6 +25,8 @@ public class Item extends BaseEntity {
 
     @Column(name = "price")
     private Integer price;
+
+    @Column(name = "availability")
     private Integer availability;
 
     public Item(Integer id, String name, String code, Integer price, Integer availability) {

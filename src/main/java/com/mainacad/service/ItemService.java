@@ -1,6 +1,7 @@
 package com.mainacad.service;
 
 import com.mainacad.dao.ItemDAO;
+import com.mainacad.dao.mongo.NoSQLItemDAO;
 import com.mainacad.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,9 @@ import java.util.Optional;
 public class ItemService {
     @Autowired
     ItemDAO itemDAO;
+
+    @Autowired
+    NoSQLItemDAO noSQLItemDAO;
 
     public Item getById(Integer id) {
         Optional<Item> cart = itemDAO.findById(id);
@@ -29,10 +33,10 @@ public class ItemService {
         return itemDAO.getAllAvailable();
     }
 
-    // CRUD
-    public Item save(Item cart) {
-        if (cart.getId() == null) {
-            return itemDAO.save(cart);
+    // CRUD SQL
+    public Item save(Item item) {
+        if (item.getId() == null) {
+            return itemDAO.save(item);
         }
         return null;
     }
@@ -54,5 +58,14 @@ public class ItemService {
 
     public void deleteById(Integer id) throws RuntimeException {
         itemDAO.deleteById(id);
+    }
+
+    // NO SQL
+    public void saveToMongo(Item item){
+        noSQLItemDAO.save(item);
+    }
+
+    public List<Item> getAllFromMongo(){
+        return noSQLItemDAO.getAll();
     }
 }
