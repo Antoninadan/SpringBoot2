@@ -17,7 +17,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringJUnitConfig(AppRunner.class)
-@ActiveProfiles("test")
 class CartDAOTest {
     private static final Long CURRENT_TIME = new Date().getTime();
     private static List<User> users;

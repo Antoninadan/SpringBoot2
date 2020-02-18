@@ -16,7 +16,6 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringJUnitConfig(AppRunner.class)
-@ActiveProfiles("test")
 class UserServiceTest {
 
     @MockBean

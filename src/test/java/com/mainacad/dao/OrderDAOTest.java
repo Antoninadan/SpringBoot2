@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringJUnitConfig(AppRunner.class)
-class ItemDAOTest {
+class OrderDAOTest {
     private static final Long CURRENT_TIME = new Date().getTime();
     private static List<User> users;
     private static List<Item> items;
@@ -81,26 +81,32 @@ class ItemDAOTest {
         orders.add(savedOrder1);
         orders.add(savedOrder2);
 
-        List<Item> foundItems = itemDAO.getAllByCart(savedCart1.getId());
-        assertNotNull(foundItems);
-        assertTrue(!foundItems.isEmpty());
-        assertTrue(foundItems.size() == 1);
-        assertEquals(foundItems.get(0).getId(), savedItem1.getId());
+        List<Order> foundOrders = orderDAO.getAllByCart(savedCart1.getId());
+        assertNotNull(foundOrders);
+        assertTrue(!foundOrders.isEmpty());
+        assertTrue(foundOrders.size() == 1);
+        assertEquals(foundOrders.get(0).getId(), savedOrder1.getId());
     }
 
     @Test
-    void getAllAvailable() {
-        Item item1 = new Item("name_1", "code_1", 10, 10);
-        Item item2 = new Item("name_2", "code_2", 20, 0);
-        Item savedItem1 = itemDAO.saveAndFlush(item1);
-        Item savedItem2 = itemDAO.saveAndFlush(item2);
-        items.add(savedItem1);
-        items.add(savedItem2);
+    void updateAmount() {
+        User user1 = new User("testLogin1", "testPassword1", "testName1", "testSurname1");
+        User savedUser1 = userDAO.saveAndFlush(user1);
+        users.add(savedUser1);
 
-        List<Item> foundItems = itemDAO.getAllAvailable();
-        assertNotNull(foundItems);
-        assertTrue(!foundItems.isEmpty());
-        assertTrue(foundItems.size() == 1);
-        assertEquals(foundItems.get(0).getId(), savedItem1.getId());
+        Cart cart1 = new Cart(Status.OPEN, user1, CURRENT_TIME);
+        Cart savedCart1 = cartDAO.saveAndFlush(cart1);
+        carts.add(savedCart1);
+
+        Item item1 = new Item("name_1", "code_1", 10, 1);
+        Item savedItem1 = itemDAO.saveAndFlush(item1);
+        items.add(savedItem1);
+
+        Order order1 = new Order(savedItem1, savedCart1, 50);
+        Order savedOrder1 = orderDAO.saveAndFlush(order1);
+        orders.add(savedOrder1);
+
+        int updatedOrderCount = orderDAO.updateAmount(savedOrder1.getId(), 100);
+        assertEquals(updatedOrderCount, 1);
     }
 }

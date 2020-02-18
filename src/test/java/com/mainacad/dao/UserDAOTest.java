@@ -25,7 +25,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringJUnitConfig(AppRunner.class)
-@ActiveProfiles("test")
 class UserDAOTest {
     private static List<User> users;
 
