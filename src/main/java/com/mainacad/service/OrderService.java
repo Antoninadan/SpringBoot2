@@ -34,11 +34,10 @@ public class OrderService {
 
         if (orders.isEmpty()) {
             return null;
-        } else {
-            for (Order each : orders) {
-                if (each.getItem().getId().equals(itemId)) {
-                    return each;
-                }
+        }
+        for (Order each : orders) {
+            if (each.getItem().getId().equals(itemId)) {
+                return each;
             }
         }
         return null;

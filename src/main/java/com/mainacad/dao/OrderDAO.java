@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface OrderDAO extends JpaRepository<Order, Integer> {
-    @Query(nativeQuery = true, value = "SELECT *, o.id as order_id FROM orders o JOIN items i ON i.id=o.item_id WHERE o.cart_id= :cartId")
+    @Query(nativeQuery = true, value = "SELECT * FROM orders o WHERE o.cart_id= :cartId")
     List<Order> getAllByCart(@Param("cartId") Integer cartId);
 
     @Modifying
