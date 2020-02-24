@@ -6,7 +6,7 @@
     <title>Main Page</title>
 </head>
 <body>
-<h2>${message}</h2>
+<h2><c: out value = "${message}" default="Hello! This is landing page!"></c:out></h2>
 <br>
 <a href="/registration">REGISTER NEW USER</a>
 <br>

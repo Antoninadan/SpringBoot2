@@ -13,10 +13,10 @@ import org.springframework.web.servlet.view.JstlView;
 public class JspWebConfig implements WebMvcConfigurer {
 
     @Override
-    public void addViewControllers (ViewControllerRegistry registry)
-    {
-        registry.addViewController("/some-url").setViewName("authorization");
-        registry.addViewController("/registration").setViewName("registration"); ///!!!!!!!!!!!!!
+    public void addViewControllers (ViewControllerRegistry registry) {
+        registry.addViewController("registration").setViewName("registration");
+        registry.addViewController("auth").setViewName("authorization");
+        registry.addViewController("/").setViewName("authorization");
     }
 
     @Override

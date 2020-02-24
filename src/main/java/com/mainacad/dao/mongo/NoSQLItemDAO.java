@@ -14,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoSQLItemDAO {
     private final MongoDatabase mongoDatabase;
+
     public void save(Item item){
         MongoCollection collection = mongoDatabase.getCollection("items");
         Document dbObject = new Document();

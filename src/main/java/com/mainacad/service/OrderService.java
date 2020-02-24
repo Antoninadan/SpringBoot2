@@ -1,6 +1,9 @@
 package com.mainacad.service;
 
 import com.mainacad.dao.OrderDAO;
+import com.mainacad.dao.mongo.NoSQLItemDAO;
+import com.mainacad.dao.mongo.NoSQLOrderDAO;
+import com.mainacad.model.Item;
 import com.mainacad.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,9 @@ import java.util.Optional;
 public class OrderService {
     @Autowired
     OrderDAO orderDAO;
+
+    @Autowired
+    NoSQLOrderDAO noSQLOrderDAO;
 
     public Order getById(Integer id) {
         Optional<Order> order = orderDAO.findById(id);
@@ -69,5 +75,10 @@ public class OrderService {
 
     public void deleteById(Integer id) throws RuntimeException {
         orderDAO.deleteById(id);
+    }
+
+    // NO SQL
+    public void saveToMongo(Order order){
+        noSQLOrderDAO.save(order);
     }
 }

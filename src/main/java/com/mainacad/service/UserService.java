@@ -35,6 +35,9 @@ public class UserService {
         }
         return user.get();
     }
+    public User getByLogin(String login){
+        return userDAO.getFirstByLogin(login);
+    }
 
     public User save(User user) {
         if (user.getId() == null && userDAO.getFirstByLogin(user.getLogin()) == null) {
