@@ -6,11 +6,11 @@ import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@EnableAutoConfiguration(exclude= {FlywayAutoConfiguration.class,
-        SecurityAutoConfiguration.class,
-        ManagementWebSecurityAutoConfiguration.class})
+@PropertySource("classpath:application.properties")
+@EnableAutoConfiguration(exclude = {FlywayAutoConfiguration.class, SecurityAutoConfiguration.class, ManagementWebSecurityAutoConfiguration.class})
 @Profile("test")
 public class SpringTestConfig {
 
