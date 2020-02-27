@@ -24,7 +24,7 @@
         <th>price</th>
     </tr>
     <c:forEach items="${itemCollection}" var="item">
-        <form action="/item/add-item-in-cart" method="post">
+        <form action="/order/add-item-in-cart" method="post">
             <tr>
                 <td><c:out value="${item.id}"/></td>
                 <td><c:out value="${item.name}"/></td>
@@ -46,7 +46,7 @@
         <c:out value="${cart.id}"/>
     </h3>
 
-    <form action="/order/items-by-cart" method="get">
+    <form action="/cart/open" method="post">
         <input name="userId" value="${user.id}" hidden>
         <input name="cartId" value="${cart.id}" hidden>
         <input type="submit" value="Open cart">

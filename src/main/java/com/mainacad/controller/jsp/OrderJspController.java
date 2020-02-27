@@ -3,6 +3,7 @@ package com.mainacad.controller.jsp;
 import com.mainacad.dao.dto.OrderDTO;
 import com.mainacad.model.Cart;
 import com.mainacad.model.Item;
+import com.mainacad.model.Order;
 import com.mainacad.model.User;
 import com.mainacad.service.CartService;
 import com.mainacad.service.ItemService;
@@ -15,10 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,10 +39,10 @@ public class OrderJspController {
     @Autowired
     MapperOrderUtil mapperOrderUtil;
 
-    @GetMapping("items-by-cart")
-    public String getAllDTOByCard(Model model,
-                                  @RequestParam(value = "userId") String userId,
-                                  @RequestParam(value = "cartId") String cartId) {
+    @PostMapping("add-item-in-cart")
+    public String addItemInCart(Model model,
+                                @RequestParam(value = "itemId") String itemId,
+                                @RequestParam(value = "userId") String userId) {
         Integer userIdSelected = Integer.valueOf(userId);
         User user = userService.getById(userIdSelected);
         if (user == null) {
@@ -52,20 +50,24 @@ public class OrderJspController {
             return "authorization";
         }
 
-        Integer cartIdSelected = Integer.valueOf(cartId);
-        Cart cart = cartService.getById(cartIdSelected);
-        if (cart == null) {
+        Integer itemIdSelected = Integer.valueOf(itemId);
+        Item item = itemService.getById(itemIdSelected);
+        if (item == null) {
             model.addAttribute("user", user);
             List<Item> items = itemService.getAllAvailable();
             model.addAttribute("itemCollection", items);
-            model.addAttribute("message", "Cart is wrong!");
+            model.addAttribute("message", "Item is wrong!");
             return "user-cabinet";
         }
 
+        Order order = orderService.addItemInCart(userIdSelected, itemIdSelected);
+        Cart cart = cartService.getById(order.getCart().getId());
+
         model.addAttribute("cart", cart);
         model.addAttribute("user", user);
-        List<OrderDTO> orderDTOS = mapperOrderUtil.toOrderDTOListFromOrderList(orderService.getAllByCart(cartIdSelected));
-        model.addAttribute("orderDTOCollection", orderDTOS);
-        return "cart";
+        List<Item> items = itemService.getAllAvailable();
+        model.addAttribute("itemCollection", items);
+        return "user-cabinet";
     }
+
 }

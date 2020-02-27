@@ -11,7 +11,6 @@ import com.mainacad.service.OrderService;
 import com.mainacad.service.UserService;
 import com.mainacad.util.MapperOrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,10 +56,10 @@ public class CartJspController {
         return "carts";
     }
 
-    @GetMapping("open")
-    public String getAllByUser(Model model,
-                               @RequestParam(value = "userId") String userId,
-                               @RequestParam(value = "cartId") String cartId) {
+    @PostMapping("open")
+    public String getCard(Model model,
+                                  @RequestParam(value = "userId") String userId,
+                                  @RequestParam(value = "cartId") String cartId) {
         Integer userIdSelected = Integer.valueOf(userId);
         User user = userService.getById(userIdSelected);
         if (user == null) {
@@ -80,8 +79,11 @@ public class CartJspController {
 
         model.addAttribute("cart", cart);
         model.addAttribute("user", user);
+        List<OrderDTO> orderDTOS = mapperOrderUtil.toOrderDTOListFromOrderList(orderService.getAllByCart(cartIdSelected));
+        model.addAttribute("orderDTOCollection", orderDTOS);
         return "cart";
     }
+
 
     @PostMapping("do-cart-to-be-closed")
     public String cartDoToBeClosed(Model model,

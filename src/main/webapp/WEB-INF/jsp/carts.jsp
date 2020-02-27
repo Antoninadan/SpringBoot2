@@ -15,7 +15,7 @@
 			<th>status</th>
 		</tr>
 		<c:forEach items="${cartCollection}" var="cart">
-			<form action="/order/items-by-cart" method="get">
+			<form action="/cart/open" method="post">
 			<tr>
 				<td><c:out value="${cart.id}" /></td>
 				<td><c:out value="${cart.status}" /></td>

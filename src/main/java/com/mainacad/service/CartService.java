@@ -50,42 +50,6 @@ public class CartService {
         return cartDAO.updateStatus(cartId, status.ordinal());
     }
 
-    public Cart addItem(Integer userId, Integer itemId) {
-        User user = userService.getById(userId);
-        if(user == null) {
-            // TODO
-            return null;
-        }
-
-        Item item = itemService.getById(itemId);
-        if(item == null) {
-            // TODO
-            return null;
-        }
-
-        List<Cart> carts = cartDAO.getByUserAndOpenStatus(userId);
-        Cart openCart;
-        if (carts.size() == 0) {
-            Long currentTime = new Date().getTime();
-            openCart = new Cart(Status.OPEN, user, currentTime);
-            cartService.save(openCart);
-            Order order = new Order(item, openCart, 1);
-            orderService.save(order);
-        } else {
-            openCart = carts.get(0);
-            Order targetOrder = orderService.getByCartWithItem(openCart.getId(), itemId);
-            if (targetOrder == null) {
-                Order order = new Order(item, openCart, 1);
-                orderService.save(order);
-            } else {
-                orderService.updateAmount(targetOrder.getId(),
-                        orderService.getById(targetOrder.getId()).getAmount() + 1);
-            }
-        }
-        return openCart;
-    }
-
-
     // CRUD
     public Cart save(Cart cart) {
         if (cart.getId() == null) {

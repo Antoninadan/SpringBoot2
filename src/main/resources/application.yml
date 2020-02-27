@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: rest
+    active: jsp
   cache:
     type: none
   mvc:

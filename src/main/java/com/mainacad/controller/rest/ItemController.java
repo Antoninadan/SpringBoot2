@@ -1,26 +1,16 @@
 package com.mainacad.controller.rest;
 
-import com.mainacad.model.Cart;
 import com.mainacad.model.Item;
-import com.mainacad.model.Status;
-import com.mainacad.model.User;
 import com.mainacad.service.CartService;
 import com.mainacad.service.ItemService;
 import com.mainacad.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-
-//@Controller
-//@Scope(value = "session")
 @RestController
 @RequestMapping("item")
 @Slf4j
@@ -96,27 +86,5 @@ public class ItemController {
     @GetMapping("available")
     public ResponseEntity getAllAvailable() {
         return new ResponseEntity(itemService.getAllAvailable(), HttpStatus.OK);
-    }
-
-    // TODO
-    @PostMapping("add-item-in-cart")
-    public ResponseEntity addItemInCart(@RequestBody String body) {
-        Map<String, Object> map = new JacksonJsonParser().parseMap(body);
-        Integer itemId = (Integer) map.get("itemId");
-        Integer userId = (Integer) map.get("userId");
-
-        User user = userService.getById(userId);
-        if (user == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-
-        Item item = itemService.getById(itemId);
-        if (item == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-
-        Cart cart = cartService.addItem(userId, itemId);
-
-        return new ResponseEntity(cart.getId(), HttpStatus.OK);
     }
 }
